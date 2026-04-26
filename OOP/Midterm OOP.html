@@ -107,14 +107,14 @@
   nav { z-index: 100; }
   footer { z-index: 2; position: relative; }
  
-  /* ── Cards – translucent glass + orange glow on hover ── */
+  /* ── Cards – glass-like transparent ── */
   .term-card {
-    background: rgba(42, 26, 10, 0.45);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(42, 26, 10, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: 16px;
-    padding: 30px 26px;
-    border: 1px solid rgba(240,223,192,0.1);
+    padding: 40px 36px;
+    border: 1px solid rgba(240,223,192,0.08);
     cursor: pointer;
     transition: transform 0.28s cubic-bezier(.22,.68,0,1.4),
                 box-shadow 0.3s,
@@ -123,27 +123,16 @@
     position: relative;
     overflow: hidden;
   }
-  .term-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--orange);
-    border-radius: 16px 16px 0 0;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
   .term-card:hover {
     transform: translateY(-8px) scale(1.018);
-    background: rgba(55, 30, 10, 0.6);
-    border-color: rgba(200,84,26,0.55);
+    background: rgba(55, 30, 10, 0.35);
+    border-color: rgba(200,84,26,0.35);
     box-shadow:
-      0 0 0 1px rgba(200,84,26,0.3),
-      0 0 30px rgba(200,84,26,0.22),
-      0 0 70px rgba(200,84,26,0.1),
-      0 16px 40px rgba(0,0,0,0.5);
+      0 0 0 1px rgba(200,84,26,0.2),
+      0 0 30px rgba(200,84,26,0.15),
+      0 0 70px rgba(200,84,26,0.08),
+      0 16px 40px rgba(0,0,0,0.4);
   }
-  .term-card:hover::before { opacity: 1; }
  
   /* ── Leaves Canvas – fixed, BEHIND all content ── */
   #leaf-canvas {
@@ -174,100 +163,223 @@
  
   /* nav-links already defined above */
  
-  /* ── Hero ── */
+  /* ══ HERO – TYPOGRAPHIC STATEMENT ══ */
   #home {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 120px 40px 80px;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 0;
     position: relative;
     background: transparent;
     overflow: hidden;
   }
- 
+
   .hero-bg-circle { display: none; }
- 
-  .hero-tag {
-    display: inline-block;
-    font-size: 0.72rem;
+
+  /* ── Main content area ── */
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 6vw 5vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── Top-right floating metadata ── */
+  .hero-meta-float {
+    position: absolute;
+    top: 110px;
+    right: 6vw;
+    text-align: right;
+    opacity: 0;
+    animation: fadeUp 0.9s 1.1s ease forwards;
+    z-index: 3;
+  }
+  .hero-meta-float .hm-label {
+    font-size: 0.58rem;
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--muted);
-    background: rgba(240,223,192,0.07);
-    border: 1px solid var(--border);
-    padding: 6px 18px;
-    border-radius: 40px;
-    margin-bottom: 28px;
-    animation: fadeUp 0.8s ease both;
-  }
- 
-  .hero-name {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.8rem, 7vw, 5rem);
-    font-weight: 900;
-    line-height: 1.08;
-    color: var(--cream);
-    margin-bottom: 18px;
-    animation: fadeUp 0.9s 0.1s ease both;
-  }
-  .hero-name span { color: var(--orange); }
- 
-  .hero-sub {
-    font-size: 0.95rem;
-    color: var(--muted);
-    font-weight: 400;
-    letter-spacing: 0.04em;
+    color: var(--orange);
     margin-bottom: 10px;
-    animation: fadeUp 0.9s 0.2s ease both;
+    display: block;
   }
- 
-  .hero-intro {
-    max-width: 600px;
-    font-size: 0.97rem;
+  .hero-meta-float .hm-line {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    line-height: 1.9;
+    display: block;
+  }
+  /* vertical rule left of meta */
+  .hero-meta-float::before {
+    content: '';
+    position: absolute;
+    right: calc(100% + 16px);
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--orange), transparent);
+    opacity: 0.35;
+  }
+
+  /* ── Ghost / outline first-name ── */
+  .hero-firstname {
+    font-family: 'Lato', sans-serif;
+    font-size: clamp(0.75rem, 1.4vw, 1rem);
+    font-weight: 300;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(240,223,192,0.2);
+    margin-bottom: 4px;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s ease forwards;
+  }
+
+  /* ── Giant last name ── */
+  .hero-lastname {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(5rem, 16vw, 14rem);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    margin: 0;
+    position: relative;
+    display: flex;
+    gap: 0;
+  }
+
+  /* Each letter animates individually */
+  .hero-lastname .letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px) skewX(-4deg);
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(240,223,192,0.18);
+    transition: color 0.4s, -webkit-text-stroke 0.4s;
+    cursor: default;
+    position: relative;
+  }
+  /* Each letter fills in staggered */
+  .hero-lastname .letter.visible {
+    color: var(--cream);
+    -webkit-text-stroke: 0px transparent;
+  }
+  /* Hover: individual letter flares orange */
+  .hero-lastname .letter:hover {
+    color: var(--orange) !important;
+    text-shadow: 0 0 80px rgba(200,84,26,0.5);
+    transition: color 0.1s, text-shadow 0.2s;
+  }
+
+  /* The giant orange leaf glyph behind the name */
+  #hero-leaf-bg {
+    position: absolute;
+    bottom: -2vh;
+    right: -2vw;
+    width: clamp(280px, 42vw, 580px);
+    opacity: 0.045;
+    pointer-events: none;
+    z-index: 1;
+    filter: blur(0px);
+    animation: heroLeafDrift 18s ease-in-out infinite alternate;
+  }
+  @keyframes heroLeafDrift {
+    from { transform: rotate(-8deg) scale(1); }
+    to   { transform: rotate(4deg) scale(1.04); }
+  }
+
+  /* ── Bottom strip ── */
+  .hero-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 6vw 32px;
+    border-top: 1px solid rgba(240,223,192,0.06);
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.4s ease forwards;
+  }
+
+  .hero-desc {
+    max-width: 360px;
+    font-size: 0.82rem;
     line-height: 1.85;
     color: var(--muted);
-    margin: 22px auto 42px;
-    animation: fadeUp 0.9s 0.3s ease both;
+    font-weight: 300;
   }
- 
+
   .hero-cta {
-    display: inline-block;
-    background: var(--orange);
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
     text-decoration: none;
-    padding: 14px 38px;
-    border-radius: 50px;
-    box-shadow: 0 6px 28px rgba(200,84,26,0.3);
-    transition: transform 0.22s, box-shadow 0.22s, background 0.22s;
-    animation: fadeUp 0.9s 0.4s ease both;
+    color: var(--cream);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border: 1px solid rgba(200,84,26,0.35);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s;
   }
-  .hero-cta:hover {
-    transform: translateY(-3px);
-    background: var(--accent);
-    box-shadow: 0 12px 36px rgba(200,84,26,0.4);
+  /* fill sweep on hover */
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(.7,0,.3,1);
+    z-index: -1;
   }
- 
+  .hero-cta:hover { color: #fff; border-color: var(--orange); }
+  .hero-cta:hover::before { transform: scaleX(1); }
+  .hero-cta .cta-arrow {
+    display: inline-block;
+    transition: transform 0.25s;
+  }
+  .hero-cta:hover .cta-arrow { transform: translateX(5px); }
+
+  /* Scroll hint — bottom-right corner */
   .scroll-hint {
     position: absolute;
-    bottom: 32px; left: 50%;
-    transform: translateX(-50%);
+    bottom: 100px;
+    right: 6vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    opacity: 0.35;
-    animation: bounce 2s infinite;
+    opacity: 0.2;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    animation: none;
+    z-index: 3;
   }
-  .scroll-hint span { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
-  .scroll-hint svg { width: 18px; }
+  .scroll-hint span {
+    font-size: 0.55rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+  }
+  .scroll-hint-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--orange), transparent);
+    animation: scrollLineAnim 2s ease-in-out infinite;
+  }
+  @keyframes scrollLineAnim {
+    0%,100% { opacity: 0.3; transform: scaleY(1); transform-origin: top; }
+    50%      { opacity: 0.7; transform: scaleY(0.4); transform-origin: bottom; }
+  }
  
   /* ── Sections ── */
   section { position: relative; z-index: 2; }
@@ -318,36 +430,96 @@
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 18px;
   }
+
+  .coming-soon-card {
+    grid-column: 1 / -1 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 50px 40px !important;
+    text-align: left !important;
+    position: relative;
+    z-index: 10;
+  }
+
+  .coming-soon-card .card-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .coming-soon-card .card-title {
+    font-size: 1.3rem;
+  }
+
+  .coming-soon-card .card-desc {
+    font-size: 0.95rem;
+  }
+
+  /* ── Coming Soon Box ── */
+  .coming-soon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+  }
+
+  .coming-soon-box {
+    background: rgba(42, 26, 10, 0.3);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 20px;
+    padding: 60px 50px;
+    border: 1px solid rgba(240,223,192,0.08);
+    text-align: center;
+    max-width: 500px;
+  }
+
+  .coming-soon-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .coming-soon-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+
+  .coming-soon-box p {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .coming-soon-note {
+    font-size: 0.9rem !important;
+    color: var(--orange) !important;
+    font-weight: 500;
+  }
  
   .term-card {
-    background: var(--surface);
+    background: rgba(42, 26, 10, 0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: 16px;
-    padding: 30px 26px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.3);
-    border: 1px solid var(--border);
+    padding: 40px 36px;
+    border: 1px solid rgba(240,223,192,0.06);
     cursor: pointer;
     transition: transform 0.26s cubic-bezier(.22,.68,0,1.4), box-shadow 0.26s, border-color 0.22s;
     position: relative;
     overflow: hidden;
   }
  
-  .term-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--orange);
-    border-radius: 16px 16px 0 0;
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
- 
   .term-card:hover {
     transform: translateY(-7px) scale(1.015);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
-    border-color: rgba(200,84,26,0.35);
+    background: rgba(55, 30, 10, 0.3);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    border-color: rgba(200,84,26,0.25);
   }
-  .term-card:hover::before { opacity: 1; }
  
   .card-icon { font-size: 1.8rem; margin-bottom: 14px; display: block; }
  
@@ -668,6 +840,470 @@
 </head>
 <body>
  
+<!-- ══════════════════════════════════════════════
+     AUTUMN INTRO ANIMATION  v2 – SHATTER EXIT
+══════════════════════════════════════════════ -->
+<style>
+  /* ══ INTRO OVERLAY ══ */
+  #intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    overflow: hidden;
+    pointer-events: all;
+    background: #0A0602;
+  }
+
+  /* Full-screen background canvas (leaves + atmosphere) */
+  #intro-bg-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  /* Full-screen shatter canvas (drawn on top during exit) */
+  #intro-shatter-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10;
+  }
+
+  /* warm vignette glow from bottom */
+  #intro-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 105%,
+        rgba(160,50,8,0.45) 0%, transparent 65%),
+      radial-gradient(ellipse 100% 30% at 50% 0%,
+        rgba(40,15,3,0.7) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── centre content ── */
+  .intro-content {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    pointer-events: none;
+  }
+
+  /* Season tag */
+  .intro-season {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: #8C6640;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: iSlideDown 0.7s 0.5s cubic-bezier(.22,.68,0,1.2) forwards;
+  }
+
+  /* Giant leaf SVG */
+  #intro-leaf-svg {
+    width: 110px;
+    height: 110px;
+    margin-bottom: 24px;
+    opacity: 0;
+    filter: drop-shadow(0 0 40px rgba(210,80,20,0.7))
+            drop-shadow(0 0 80px rgba(180,50,10,0.35));
+    animation: iLeafSpin 1.1s 0.05s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+
+  /* Horizontal rule lines flanking title */
+  .intro-rule-wrap {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 14px;
+    opacity: 0;
+    animation: iFadeIn 0.6s 1.15s ease forwards;
+  }
+  .intro-rule {
+    height: 1px;
+    width: 60px;
+    background: linear-gradient(90deg, transparent, rgba(200,84,26,0.6));
+  }
+  .intro-rule.r { transform: scaleX(-1); }
+  .intro-rule-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #C8541A;
+    box-shadow: 0 0 8px rgba(200,84,26,0.8);
+  }
+
+  /* Main name */
+  .intro-name {
+    font-family: 'Lato', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 900;
+    line-height: 1;
+    color: #F0DFC0;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: iSlideUp 0.9s 0.75s cubic-bezier(.22,.68,0,1.15) forwards;
+  }
+  .intro-name .hl {
+    color: #C8541A;
+    text-shadow: 0 0 60px rgba(200,84,26,0.5);
+  }
+
+  /* Subtitle */
+  .intro-sub {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: #7A5C3A;
+    letter-spacing: 0.12em;
+    text-align: center;
+    margin-bottom: 38px;
+    opacity: 0;
+    animation: iFadeIn 0.7s 1.0s ease forwards;
+  }
+
+
+
+  /* ── Corner branch overlays ── */
+  .intro-corner {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 3;
+  }
+  .intro-corner.tl { top: 0; left: 0; animation: iCornerTL 1.4s 0.1s ease forwards; }
+  .intro-corner.tr { top: 0; right: 0; animation: iCornerTR 1.4s 0.2s ease forwards; }
+  .intro-corner.bl { bottom: 0; left: 0; animation: iCornerBL 1.4s 0.15s ease forwards; }
+  .intro-corner.br { bottom: 0; right: 0; animation: iCornerBR 1.4s 0.25s ease forwards; }
+
+  /* ── Keyframes ── */
+  @keyframes iSlideUp {
+    from { opacity: 0; transform: translateY(36px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes iSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes iFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes iLeafSpin {
+    from { opacity: 0; transform: rotate(-60deg) scale(0.3); }
+    to   { opacity: 1; transform: rotate(0deg)  scale(1); }
+  }
+  @keyframes iCornerTL {
+    from { opacity: 0; transform: translate(-30px, -30px) scale(0.7); }
+    to   { opacity: 0.28; transform: translate(0,0) scale(1); }
+  }
+  @keyframes iCornerTR {
+    from { opacity: 0; transform: translate(30px, -30px) scale(0.7); }
+    to   { opacity: 0.22; transform: translate(0,0) scale(1); }
+  }
+  @keyframes iCornerBL {
+    from { opacity: 0; transform: translate(-30px, 30px) scale(0.7); }
+    to   { opacity: 0.2; transform: translate(0,0) scale(1); }
+  }
+  @keyframes iCornerBR {
+    from { opacity: 0; transform: translate(30px, 30px) scale(0.7); }
+    to   { opacity: 0.25; transform: translate(0,0) scale(1); }
+  }
+
+  /* Freeze scroll while intro runs */
+  body.intro-active { overflow: hidden; }
+
+  /* Smooth fade-out for overlay content */
+  #intro-overlay.dissolving .intro-content,
+  #intro-overlay.dissolving .intro-corner {
+    transition: opacity 0.8s ease;
+    opacity: 0 !important;
+  }
+</style>
+
+<div id="intro-overlay" role="presentation" aria-hidden="true">
+
+  <!-- Background atmosphere + falling leaves -->
+  <canvas id="intro-bg-canvas"></canvas>
+
+  <!-- Corner branch decorations -->
+  <svg class="intro-corner tl" width="320" height="320" viewBox="0 0 320 320" fill="none">
+    <path d="M8 8 C40 30 70 20 100 60 C130 100 120 150 180 160 C220 168 270 140 310 180" stroke="#B8501A" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.7"/>
+    <path d="M8 8 C25 60 15 110 40 160 C55 190 80 210 60 260" stroke="#8C3D10" stroke-width="1.1" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M100 60 C130 38 165 42 190 55" stroke="#A0501A" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M180 160 C200 128 235 120 265 130" stroke="#8C3D10" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <!-- leaf clusters -->
+    <ellipse cx="195" cy="52" rx="13" ry="8" transform="rotate(-28 195 52)" fill="#C8541A" opacity="0.75"/>
+    <ellipse cx="268" cy="127" rx="12" ry="7" transform="rotate(18 268 127)" fill="#D9692A" opacity="0.65"/>
+    <ellipse cx="63" cy="258" rx="11" ry="6" transform="rotate(-42 63 258)" fill="#E07030" opacity="0.6"/>
+    <ellipse cx="313" cy="177" rx="14" ry="8" transform="rotate(8 313 177)" fill="#B04010" opacity="0.7"/>
+    <ellipse cx="148" cy="44" rx="9" ry="5" transform="rotate(-15 148 44)" fill="#F08840" opacity="0.55"/>
+  </svg>
+
+  <svg class="intro-corner tr" width="320" height="320" viewBox="0 0 320 320" fill="none" style="transform:scaleX(-1)">
+    <path d="M8 8 C40 30 70 20 100 60 C130 100 120 150 180 160 C220 168 270 140 310 180" stroke="#B8501A" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M8 8 C25 60 15 110 40 160 C55 190 80 210 60 260" stroke="#8C3D10" stroke-width="1.1" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <ellipse cx="195" cy="52" rx="13" ry="8" transform="rotate(-28 195 52)" fill="#D9692A" opacity="0.6"/>
+    <ellipse cx="63" cy="258" rx="11" ry="6" transform="rotate(-42 63 258)" fill="#C8541A" opacity="0.5"/>
+    <ellipse cx="313" cy="177" rx="14" ry="8" transform="rotate(8 313 177)" fill="#E07030" opacity="0.55"/>
+  </svg>
+
+  <svg class="intro-corner bl" width="320" height="320" viewBox="0 0 320 320" fill="none" style="transform:scaleY(-1)">
+    <path d="M8 8 C40 30 70 20 100 60 C130 100 120 150 180 160 C220 168 270 140 310 180" stroke="#B8501A" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <path d="M8 8 C25 60 15 110 40 160" stroke="#8C3D10" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.4"/>
+    <ellipse cx="100" cy="62" rx="10" ry="6" transform="rotate(-20 100 62)" fill="#C8541A" opacity="0.55"/>
+    <ellipse cx="183" cy="158" rx="12" ry="7" transform="rotate(5 183 158)" fill="#D9692A" opacity="0.5"/>
+  </svg>
+
+  <svg class="intro-corner br" width="320" height="320" viewBox="0 0 320 320" fill="none" style="transform:scale(-1,-1)">
+    <path d="M8 8 C40 30 70 20 100 60 C130 100 120 150 180 160 C220 168 270 140 310 180" stroke="#B8501A" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <ellipse cx="195" cy="52" rx="13" ry="8" transform="rotate(-28 195 52)" fill="#E07030" opacity="0.6"/>
+    <ellipse cx="313" cy="177" rx="14" ry="8" transform="rotate(8 313 177)" fill="#C8541A" opacity="0.65"/>
+    <ellipse cx="63" cy="258" rx="11" ry="6" transform="rotate(-42 63 258)" fill="#D9692A" opacity="0.5"/>
+  </svg>
+
+  <!-- Centre content -->
+  <div class="intro-content">
+    <div class="intro-season"> Object-Oriented Programming </div>
+
+    <!-- Maple leaf emblem -->
+    <svg id="intro-leaf-svg" viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="lg1" cx="50%" cy="35%" r="60%">
+          <stop offset="0%"   stop-color="#F08040"/>
+          <stop offset="55%"  stop-color="#C8541A"/>
+          <stop offset="100%" stop-color="#7A2000"/>
+        </radialGradient>
+        <filter id="leafGlow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+      </defs>
+      <!-- Maple leaf — detailed 11-lobe path -->
+      <path d="
+        M50 4
+        C50 4 54 16 60 16 C66 16 74 9 78 13 C82 17 74 24 76 30
+        C78 34 88 31 90 36 C92 41 83 43 82 49 C81 52 88 56 86 61
+        C84 66 75 61 71 64 C68 66 71 77 66 80 C63 82 58 74 54 72
+        L54 96 L46 96
+        L46 72 C42 74 37 82 34 80 C29 77 32 66 29 64
+        C25 61 16 66 14 61 C12 56 19 52 18 49
+        C17 43 8 41 10 36 C12 31 22 34 24 30
+        C26 24 18 17 22 13 C26 9 34 16 40 16 C46 16 50 4 50 4Z"
+        fill="url(#lg1)" filter="url(#leafGlow)"/>
+      <!-- Central vein -->
+      <path d="M50 30 L50 70" stroke="rgba(255,220,160,0.3)" stroke-width="1.2" fill="none"/>
+      <!-- Side veins -->
+      <path d="M50 42 L36 30" stroke="rgba(255,220,160,0.18)" stroke-width="0.8" fill="none"/>
+      <path d="M50 42 L64 30" stroke="rgba(255,220,160,0.18)" stroke-width="0.8" fill="none"/>
+      <path d="M50 54 L38 46" stroke="rgba(255,220,160,0.12)" stroke-width="0.7" fill="none"/>
+      <path d="M50 54 L62 46" stroke="rgba(255,220,160,0.12)" stroke-width="0.7" fill="none"/>
+      <!-- Stem -->
+      <rect x="47" y="95" width="6" height="14" rx="3" fill="#7A2000" opacity="0.8"/>
+    </svg>
+
+
+    <h1 class="intro-name">Erick James <span class="hl">Regala</span></h1><br>
+    <p class="intro-sub">BSIT 2-1 &nbsp;·&nbsp; Polytechnic University of the Philippines</p>
+
+
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   AUTUMN INTRO v3  –  SMOOTH AUTO LEAF-DISSOLVE EXIT
+═══════════════════════════════════════════════════════ */
+(function () {
+  const overlay = document.getElementById('intro-overlay');
+  const bgCnv   = document.getElementById('intro-bg-canvas');
+  const bgCtx   = bgCnv.getContext('2d');
+  let   bgRAF;
+
+  function resize() {
+    bgCnv.width  = window.innerWidth;
+    bgCnv.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  document.body.classList.add('intro-active');
+
+  const LC = [
+    '#C8541A','#D9692A','#E07030','#B84010',
+    '#A03018','#F08840','#8C3010','#D05020',
+    '#E8A050','#986030','#CF6020','#BA4C18'
+  ];
+
+  function leafPath(c, s) {
+    c.beginPath();
+    c.moveTo(0, -s);
+    c.bezierCurveTo( s*.55, -s*.55,  s*.65, s*.3,  0,  s*.85);
+    c.bezierCurveTo(-s*.65,  s*.3, -s*.55, -s*.55, 0, -s);
+    c.closePath();
+  }
+  function maplePath(c, s) {
+    c.beginPath();
+    const pts = 5;
+    for (let i = 0; i < pts * 2; i++) {
+      const r = i % 2 === 0 ? s : s * 0.42;
+      const a = (i / (pts * 2)) * Math.PI * 2 - Math.PI / 2;
+      i === 0 ? c.moveTo(Math.cos(a)*r, Math.sin(a)*r)
+              : c.lineTo(Math.cos(a)*r, Math.sin(a)*r);
+    }
+    c.closePath();
+  }
+  function ovalPath(c, s) {
+    c.beginPath();
+    c.ellipse(0, 0, s * 0.55, s, 0, 0, Math.PI * 2);
+  }
+  const SHAPES = [leafPath, maplePath, ovalPath, leafPath, maplePath];
+
+  class BgLeaf {
+    reset(init) {
+      const W = bgCnv.width, H = bgCnv.height;
+      this.x     = Math.random() * W;
+      this.y     = init ? Math.random() * H : -24;
+      this.s     = 7 + Math.random() * 16;
+      this.sp    = 0.4 + Math.random() * 1.3;
+      this.sw    = 0.6 + Math.random() * 1.6;
+      this.sa    = Math.random() * Math.PI * 2;
+      this.rot   = Math.random() * Math.PI * 2;
+      this.rs    = (Math.random() - 0.5) * 0.038;
+      this.col   = LC[Math.floor(Math.random() * LC.length)];
+      this.shp   = Math.floor(Math.random() * SHAPES.length);
+      this.a     = 0.08 + Math.random() * 0.32;
+      this.vx    = 0; this.vy = 0;
+      this.dissolving = false;
+      this.driftVx    = 0;
+      this.driftVy    = 0;
+    }
+    constructor(init) { this.reset(init); }
+    update(dissolving) {
+      if (dissolving && !this.dissolving) {
+        this.dissolving = true;
+        this.driftVx = (Math.random() - 0.5) * 3.5;
+        this.driftVy = 1.5 + Math.random() * 4;
+        this.sp     *= 2.5;
+        this.rs     *= 2;
+      }
+      this.sa  += 0.012;
+      this.x   += Math.sin(this.sa * this.sw) * 0.65 + this.vx + this.driftVx;
+      this.y   += this.sp + this.vy + this.driftVy;
+      this.rot += this.rs;
+      this.vx  *= 0.95; this.vy *= 0.95;
+      if (dissolving) {
+        this.a = Math.max(0, this.a - 0.004);
+      }
+    }
+    draw() {
+      if (this.a <= 0) return;
+      bgCtx.save();
+      bgCtx.translate(this.x, this.y);
+      bgCtx.rotate(this.rot);
+      bgCtx.globalAlpha = this.a;
+      bgCtx.fillStyle   = this.col;
+      SHAPES[this.shp](bgCtx, this.s);
+      bgCtx.fill();
+      bgCtx.restore();
+    }
+  }
+
+  const leaves = Array.from({ length: 80 }, (_, i) => new BgLeaf(true));
+
+  const embers = Array.from({ length: 28 }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: window.innerHeight + Math.random() * 200,
+    s: 1 + Math.random() * 2.5,
+    sp: 0.3 + Math.random() * 0.7,
+    a: 0.2 + Math.random() * 0.5,
+    sa: Math.random() * Math.PI * 2,
+    col: ['#E8803A','#F0A050','#D06020','#FFB060'][Math.floor(Math.random()*4)]
+  }));
+
+  let overlayAlpha = 1;
+  let dissolving   = false;
+  let done         = false;
+
+  function bgLoop() {
+    if (done) return;
+    const W = bgCnv.width, H = bgCnv.height;
+    bgCtx.clearRect(0, 0, W, H);
+
+    const bgGrad = bgCtx.createLinearGradient(0, 0, 0, H);
+    bgGrad.addColorStop(0,   '#080402');
+    bgGrad.addColorStop(0.5, '#0E0603');
+    bgGrad.addColorStop(1,   '#180A04');
+    bgCtx.fillStyle = bgGrad;
+    bgCtx.fillRect(0, 0, W, H);
+
+    const hg = bgCtx.createRadialGradient(W/2, H, 0, W/2, H, H*0.75);
+    hg.addColorStop(0,   'rgba(150,45,8,0.35)');
+    hg.addColorStop(0.4, 'rgba(100,30,5,0.15)');
+    hg.addColorStop(1,   'transparent');
+    bgCtx.fillStyle = hg;
+    bgCtx.fillRect(0, 0, W, H);
+
+    if (!dissolving) {
+      embers.forEach(e => {
+        e.sa += 0.04;
+        e.x  += Math.sin(e.sa) * 0.5;
+        e.y  -= e.sp;
+        if (e.y < -10) { e.y = H + 10; e.x = Math.random() * W; }
+        bgCtx.save();
+        bgCtx.globalAlpha = e.a * Math.abs(Math.sin(e.sa * 0.5));
+        bgCtx.fillStyle = e.col;
+        bgCtx.beginPath();
+        bgCtx.arc(e.x, e.y, e.s, 0, Math.PI * 2);
+        bgCtx.fill();
+        bgCtx.restore();
+      });
+    }
+
+    leaves.forEach(l => { l.update(dissolving); l.draw(); });
+
+    if (dissolving) {
+      overlayAlpha = Math.max(0, overlayAlpha - 0.008);
+      overlay.style.opacity = overlayAlpha;
+      if (overlayAlpha <= 0) {
+        done = true;
+        overlay.remove();
+        document.body.classList.remove('intro-active');
+        cancelAnimationFrame(bgRAF);
+        return;
+      }
+    }
+
+    bgRAF = requestAnimationFrame(bgLoop);
+  }
+  bgLoop();
+
+  function startDissolve() {
+    const content = overlay.querySelector('.intro-content');
+    const corners = overlay.querySelectorAll('.intro-corner');
+    if (content) { content.style.transition = 'opacity 0.8s ease'; content.style.opacity = '0'; }
+    corners.forEach(c => { c.style.transition = 'opacity 0.6s ease'; c.style.opacity = '0'; });
+    setTimeout(() => { dissolving = true; }, 600);
+  }
+
+  setTimeout(startDissolve, 3000);
+
+})();
+</script>
+
 <!-- Cursor -->
 <div id="cursor"></div>
 <div id="cursor-dot"></div>
@@ -689,20 +1325,68 @@
  
 <!-- Hero -->
 <section id="home">
-  <div class="hero-bg-circle"></div>
-  <div class="hero-bg-circle"></div>
-  <div class="hero-tag">E-Portfolio · Object-Oriented Programming</div>
-  <h1 class="hero-name">Erick James Regala</h1>
-  <p class="hero-sub">Bachelor of Science in Information Technology 2-1
-  <p class="hero-sub">Polytechnic University of the Philippines - Sta. Mesa</p>
-  <p class="hero-intro">
-    Welcome to my OOP E-Portfolio. This site presents my Midterm and Final projects in
-    Object-Oriented Programming — including quizzes, seatworks, activities, and exams
-    that demonstrate my understanding of core OOP concepts such as classes, objects,
-    inheritance, encapsulation, and polymorphism.
-  </p>
-  <a href="#midterm" class="hero-cta">View My Work</a>
+
+  <!-- Giant ghost leaf behind the name -->
+  <svg id="hero-leaf-bg" viewBox="0 0 300 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M150 10
+      C150 10 162 48 178 48 C194 48 218 28 230 38 C242 48 222 68 226 88
+      C230 106 262 96 268 114 C274 132 248 138 244 156 C240 172 260 186 255 204
+      C250 222 224 210 214 220 C204 230 210 262 196 270 C184 276 170 250 158 248
+      L158 330 L142 330
+      L142 248 C130 250 116 276 104 270 C90 262 96 230 86 220
+      C76 210 50 222 45 204 C40 186 60 172 56 156 C52 138 26 132 32 114
+      C38 96 70 106 74 88 C78 68 58 48 70 38 C82 28 106 48 122 48 C138 48 150 10 150 10Z"
+      fill="#C8541A"/>
+  </svg>
+
+  <!-- Top-right floating metadata -->
+  <div class="hero-meta-float">
+    <span class="hm-label">E-Portfolio</span>
+    <span class="hm-line">Object-Oriented Programming</span>
+    <span class="hm-line">BSIT 2-1 &nbsp;·&nbsp; PUP Sta. Mesa</span>
+  </div>
+
+  <!-- Vertical scroll hint -->
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-hint-line"></div>
+  </div>
+
+  <!-- Main name block -->
+  <div class="hero-inner">
+    <div class="hero-firstname">Erick James</div>
+    <h1 class="hero-lastname" aria-label="Regala">
+      <span class="letter" data-i="0">R</span><span class="letter" data-i="1">E</span><span class="letter" data-i="2">G</span><span class="letter" data-i="3">A</span><span class="letter" data-i="4">L</span><span class="letter" data-i="5">A</span>
+    </h1>
+  </div>
+
+  <!-- Bottom info strip -->
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      A curated collection of work in Object-Oriented Programming —
+      tracing my journey through classes, inheritance, encapsulation, and polymorphism.
+    </p>
+    <a href="#midterm" class="hero-cta">
+      View My Work <span class="cta-arrow">→</span>
+    </a>
+  </div>
+
 </section>
+
+<script>
+/* ── Letter-by-letter name reveal ── */
+(function() {
+  const letters = document.querySelectorAll('.hero-lastname .letter');
+  letters.forEach((el, i) => {
+    setTimeout(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0) skewX(0deg)';
+      el.style.transition = `opacity 0.55s ease, transform 0.65s cubic-bezier(.22,.68,0,1.2), color 0.4s, -webkit-text-stroke 0.4s`;
+      setTimeout(() => el.classList.add('visible'), 30);
+    }, 700 + i * 90);
+  });
+})();
+</script>
  
 <!-- Midterm -->
 <section id="midterm">
@@ -715,17 +1399,17 @@
     </p>
     <div class="term-cards-grid">
       <div class="term-card reveal" onclick="openPanel('midterm-quiz')">
-        <div class="card-title">Midterm Quizzes</div>
+        <div class="card-title">Quizzes</div>
         <div class="card-desc">Questions, answers, and explanations on OOP fundamentals and Java syntax.</div>
         <div class="card-cta">View Quizzes →</div>
       </div>
       <div class="term-card reveal" onclick="openPanel('midterm-seatwork')">
-        <div class="card-title">Midterm Seatwork</div>
+        <div class="card-title">Seatwork</div>
         <div class="card-desc">In-class exercises covering classes, objects, and data types in Java.</div>
         <div class="card-cta">View Seatwork →</div>
       </div>
       <div class="term-card reveal" onclick="openPanel('midterm-activities')">
-        <div class="card-title">Midterm Activities</div>
+        <div class="card-title">Activities</div>
         <div class="card-desc">Java programs: ATM simulation, decision structures, methods & more.</div>
         <div class="card-cta">View Activities →</div>
       </div>
@@ -735,7 +1419,7 @@
         <div class="card-cta">View Assignments →</div>
       </div>
       <div class="term-card reveal" onclick="openPanel('midterm-exam')">
-        <div class="card-title">Midterm Exam</div>
+        <div class="card-title">Exam</div>
         <div class="card-desc">Answers, code solutions, and personal reflection on the midterm exam.</div>
         <div class="card-cta">View Exam →</div>
       </div>
@@ -753,30 +1437,11 @@
       OOP topics like inheritance, polymorphism, and interfaces.
     </p>
     <div class="term-cards-grid">
-      <div class="term-card reveal" onclick="openPanel('final-quiz')">
-        <div class="card-title">Final Quizzes</div>
-        <div class="card-desc">Questions and answers on advanced OOP topics and design patterns.</div>
-        <div class="card-cta">View Quizzes →</div>
-      </div>
-      <div class="term-card reveal" onclick="openPanel('final-seatwork')">
-        <div class="card-title">Final Seatwork</div>
-        <div class="card-desc">In-class exercises on inheritance hierarchies and polymorphic behavior.</div>
-        <div class="card-cta">View Seatwork →</div>
-      </div>
-      <div class="term-card reveal" onclick="openPanel('final-activities')">
-        <div class="card-title">Final Activities</div>
-        <div class="card-desc">Java projects showcasing encapsulation, interfaces, and abstract classes.</div>
-        <div class="card-cta">View Activities →</div>
-      </div>
-      <div class="term-card reveal" onclick="openPanel('final-assignment')">
-        <div class="card-title">Assignments</div>
-        <div class="card-desc">Final-term assignments applying full OOP principles to real-world problems.</div>
-        <div class="card-cta">View Assignments →</div>
-      </div>
-      <div class="term-card reveal" onclick="openPanel('final-exam')">
-        <div class="card-title">Final Exam</div>
-        <div class="card-desc">Code answers, reflections, and key learnings from the final examination.</div>
-        <div class="card-cta">View Exam →</div>
+      <div class="term-card reveal coming-soon-card" id="final-card" onclick="try { openPanel('final-in-progress'); } catch(e) { console.error(e); alert('Error: ' + e.message); }">
+        <div class="card-icon">🔜</div>
+        <div class="card-title">Coming Soon</div>
+        <div class="card-desc">Final term records will be available after the final examination period.</div>
+        <div class="card-cta">Click to View Status →</div>
       </div>
     </div>
   </div>
@@ -789,27 +1454,27 @@
     <h2 class="section-title reveal">Contact</h2>
     <p class="section-desc reveal">Feel free to reach out for questions, feedback, or collaboration.</p>
     <div class="contact-grid reveal">
-      <div class="contact-item">
+      <a class="contact-item" href="https://www.facebook.com/erickregala12543" target="_blank" rel="noopener">
         <span class="contact-icon">👤</span>
         <div>
           <div class="contact-label">Your Name</div>
           <div class="contact-val">Erick James Regala</div>
         </div>
-      </div>
-      <div class="contact-item">
+      </a>
+      <a class="contact-item" href="https://www.pup.edu.ph" target="_blank" rel="noopener">
         <span class="contact-icon">🏫</span>
         <div>
           <div class="contact-label">BSIT 2-1</div>
           <div class="contact-val">Polytechnic University of the Philippines - Sta. Mesa</div>
         </div>
-      </div>
-      <div class="contact-item">
+      </a>
+      <a class="contact-item" href="mailto:erickjamesbregala@iskolarngbayan.pup.edu.ph">
         <span class="contact-icon">📧</span>
         <div>
           <div class="contact-label">Email</div>
           <div class="contact-val">erickjamesbregala@iskolarngbayan.pup.edu.ph</div>
         </div>
-      </div>
+      </a>
       <div class="contact-item">
         <span class="contact-icon">📚</span>
         <div>
@@ -833,90 +1498,104 @@
   <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
     <div class="panel-header">
       <button class="panel-close" onclick="closePanel('midterm-quiz')">✕</button>
-      <div class="panel-eyebrow">Midterm · Quiz</div>
-      <div class="panel-title">📝 Midterm Quizzes</div>
+      <div class="panel-eyebrow">Midterm
+      </div>
+      <div class="panel-title">Quizzes</div>
     </div>
     <div class="panel-body">
-      <div class="content-block">
+      <div class="sub-tabs">
+        <button class="sub-tab active" onclick="switchTab(this,'qz1')">Quiz 1</button>
+        <button class="sub-tab" onclick="switchTab(this,'qz2')">Quiz 2</button>
+    </div>
+
+   <div class="sub-content active" id="qz1">
+        <div class="content-block">
         <span class="badge badge-quiz">Quiz 1</span>
         <h3>OOP Fundamentals</h3>
-        <p><strong>Q1.</strong> What is a class in Java?</p>
-        <p><strong>A:</strong> A class is a blueprint or template from which objects are created. It defines the properties (fields) and behaviors (methods) that its objects will have.</p>
-        <div class="reflection-box"><p>💡 <em>Add your explanation here — replace this placeholder with your own quiz questions, answers, and explanations.</em></p></div>
+                          <img src="QZ1.png" alt="Seatwork Output" class="portfolio-img"> 
+        <div class="reflection-box"><p>💡 <em>This Quiz tested the essential knowledge of mine in Java history, OOP basics, and variables. While the heavy memorization was challenging, reviewing these core concepts built a strong foundation for future coding.</em></p></div>
       </div>
-      <div class="content-block">
-        <span class="badge badge-quiz">Quiz 2</span>
-        <h3>Java Syntax & Data Types</h3>
-        <p><strong>Q1.</strong> What is the difference between <code>int</code> and <code>Integer</code> in Java?</p>
-        <p><strong>A:</strong> <code>int</code> is a primitive data type while <code>Integer</code> is a wrapper class that allows int values to be used as objects.</p>
-        <div class="reflection-box"><p>💡 <em>Replace this with your actual quiz content.</em></p></div>
-      </div>
-      <div class="img-placeholder">📷 Add Screenshot of Quiz / Output Here</div>
     </div>
-  </div>
+
+
+         <div class="sub-content" id="qz2">
+        <div class="content-block">
+        <span class="badge badge-quiz">Quiz 2</span>
+        <h3>OOP Fundamentals</h3>
+                          <img src="QZ2.png" alt="Seatwork Output" class="portfolio-img"> 
+        <div class="reflection-box"><p>💡 <em>Quiz 2 shifted our focus from basic theory to actual program structure. Learning how to properly define classes, scope different types of variables, and write functional methods gave me a much clearer picture of how Java applications are built and organized.</em></p></div>
+      </div>
+    </div>
 </div>
- 
+</div>
+</div>
+
 <!-- MIDTERM SEATWORK -->
 <div class="panel-overlay" id="panel-midterm-seatwork">
   <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
     <div class="panel-header">
       <button class="panel-close" onclick="closePanel('midterm-seatwork')">✕</button>
-      <div class="panel-eyebrow">Midterm · Seatwork</div>
-      <div class="panel-title">✏️ Midterm Seatwork</div>
+      <div class="panel-eyebrow">Midterm</div>
+      <div class="panel-title">Seatwork</div>
     </div>
     <div class="panel-body">
-      <div class="content-block">
-        <span class="badge badge-sw">Seatwork 1</span>
-        <h3>Hello World & Basic I/O</h3>
-        <p>Write a Java program that asks the user for their name and prints a greeting.</p>
-        <div class="code-block"><span class="kw">import</span> java.util.Scanner;
- 
-<span class="kw">public class</span> <span class="highlight">HelloUser</span> {
-    <span class="kw">public static void</span> main(String[] args) {
-        Scanner sc = <span class="kw">new</span> Scanner(System.in);
-        System.out.print(<span class="str">"Enter your name: "</span>);
-        String name = sc.nextLine();
-        System.out.println(<span class="str">"Hello, "</span> + name + <span class="str">"!"</span>);
-    }
-}</div>
-        <div class="reflection-box"><p>💡 <em>Add your explanation and what you learned from this seatwork.</em></p></div>
+      <div class="sub-tabs">
+        <button class="sub-tab active" onclick="switchTab(this,'sw1')">SEATWORK 1</button>
+        <button class="sub-tab" onclick="switchTab(this,'sw2')">SEATWORK 2</button>
       </div>
-      <div class="img-placeholder">📷 Add Screenshot of Seatwork Output Here</div>
+ <div class="sub-content active" id="sw1">
+        <div class="content-block">
+          <span class="badge badge-sw">Seatwork 1</span>
+          <img src="SW1.png" alt="Seatwork Output" class="portfolio-img"> 
+            </div>
+        <div class="reflection-box"><p>💡 <em>Seatwork 1 introduced logical and bitwise operators, which I found surprisingly difficult compared to what we've tackled so far. Trying to understand the underlying math and how bits are actually manipulated behind the scenes was a tough hurdle, showing me I need to spend a bit more time practicing this specific concept.</em></p></div>
+      </div>
+
+ <div class="sub-content" id="sw2">
+        <div class="content-block">
+          <span class="badge badge-sw">Seatwork 2</span>
+          <img src="SW2.png" alt="Seatwork Output" class="portfolio-img"> 
+            </div>
+        <div class="reflection-box"><p>💡 <em>Creating the basic ATM system for Seatwork 2 was a great hands-on challenge. It took the theoretical concepts from our previous quizzes and forced me to apply them to a functional program, carefully managing things like account balances, user inputs, and transaction logic.</em></p></div>
+      </div>
+
     </div>
   </div>
 </div>
- 
+
 <!-- MIDTERM ACTIVITIES -->
 <div class="panel-overlay" id="panel-midterm-activities">
   <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
     <div class="panel-header">
       <button class="panel-close" onclick="closePanel('midterm-activities')">✕</button>
-      <div class="panel-eyebrow">Midterm · Activities</div>
-      <div class="panel-title">💻 Midterm Activities</div>
+      <div class="panel-eyebrow">Midterm</div>
+      <div class="panel-title">Activities</div>
     </div>
     <div class="panel-body">
       <div class="sub-tabs">
-        <button class="sub-tab active" onclick="switchTab(this,'act-atm')">ACTIVITY 1</button>
-        <button class="sub-tab" onclick="switchTab(this,'act-decision')">ACTIVITY 2</button>
-        <button class="sub-tab" onclick="switchTab(this,'act-methods')">ACTIVITY 3</button>
+        <button class="sub-tab active" onclick="switchTab(this,'act1')">ACTIVITY 1</button>
+        <button class="sub-tab" onclick="switchTab(this,'act2')">ACTIVITY 2</button>
+        <button class="sub-tab" onclick="switchTab(this,'act3')">ACTIVITY 3</button>
+        <button class="sub-tab" onclick="switchTab(this,'act4')">ACTIVITY 4</button>
+        <button class="sub-tab" onclick="switchTab(this,'act5')">ACTIVITY 5</button>
       </div>
  
-      <div class="sub-content active" id="act-atm">
+<div class="sub-content active" id="act1">
         <div class="content-block">
           <span class="badge badge-act">Activity 1</span>
-          <h3>ATM Simulation Program</h3>
-          <p>A simple ATM program demonstrating OOP concepts — classes, encapsulation, and methods.</p>
+          <h3>Variables</h3>
+          <p>Analyze the Java program and trace the references and memory changes step-by-step. </p>
          
  
    <img src="act1.png" alt="Seatwork Output" class="portfolio-img"> 
 
 </div>
           <div class="reflection-box">
-            <p>💡 <strong>What I learned:</strong> <em>This activity helped me understand encapsulation — keeping the balance private and controlling access through public methods. Replace this with your own reflection.</em></p>
+            <p>💡 <strong>What I learned:</strong> <em>Activity 1 was a comprehensive exercise in code tracing. Starting with variable types and moving on to analyzing the exact impact of every single line really sharpened my ability to follow the program's logic. By the time I had to determine the final output, I had a much clearer understanding of how the computer actually reads and executes the source code.</em></p>
           </div>
         </div>
        
-<div class="sub-content" id="act-decision">
+<div class="sub-content" id="act2">
         <div class="content-block">
           <span class="badge badge-act">Activity 2</span>
           <h3>Part 1</h3>
@@ -930,7 +1609,7 @@
         <span class="kw">boolean</span> b2 = <span class="kw">true</span> ^ <span class="kw">true</span>;
         <span class="kw">int</span> num2 = 10 ^ 5;
 
-        System.out.println(b1 + <span class="str">", "</span> + b2 + <span class="str">", "</span> + num1 + <span class="str">", "</span> + num2);sss
+        System.out.println(b1 + <span class="str">", "</span> + b2 + <span class="str">", "</span> + num1 + <span class="str">", "</span> + num2);
     }
 }</div>
           <div class="output-block">Output: true, false, 10, 15</div>
@@ -941,7 +1620,7 @@
           <h3>Part 2</h3>
           <p>Create a Java program using the ternary operator that will produce the output: true, false, 25, 30.</p>
           <div class="code-block"><span class="kw">public class</span> <span class="highlight">PartTwo</span> {
-        <span class="kw">public static void</span> main(String[] args) {
+    <span class="kw">public static void</span> main(String[] args) {
 
         <span class="kw">boolean</span> res1 = (10 &gt; 5) ? <span class="kw">true</span> : <span class="kw">false</span>;
         <span class="kw">boolean</span> res2 = (10 &lt; 5) ? <span class="kw">true</span> : <span class="kw">false</span>;
@@ -951,12 +1630,11 @@
 
         System.out.printf(<span class="str">"%b, %b, %d, %d\n"</span>, res1, res2, val1, val2);
     }
-} </div> 
-     <div class="output-block">Output: true, false, 25, 30</div>
+}</div> 
+          <div class="output-block">Output: true, false, 25, 30</div>
         </div>
-         
 
-<div class="content-block">
+        <div class="content-block">
           <span class="badge badge-act">Activity 2</span>
           <h3>Part 3</h3>
           <p>Create a Java program using compound assignment operators that will produce the output: Addition: 120, Subtraction: 70, Multiplication: 144, Division: 16.</p>
@@ -981,12 +1659,13 @@
 }</div>
           <div class="output-block">Output: Addition: 120, Subtraction: 70, Multiplication: 144, Division: 16</div>
         </div>
-        </div>
+        <div class="reflection-box"><p>💡 <em>Activity 2 was a great practical exercise in writing cleaner Java code. I initially found the underlying math of bitwise operators a bit tough to grasp, but seeing them applied directly in Part 1 really helped clarify how they manipulate data. Learning the ternary operator in Part 2 and compound assignments in Part 3 also showed me some really efficient shortcuts, proving that I don't always need long, drawn-out blocks of code to handle simple conditions and math.</em></p></div>
+      </div>
 
-<div class="sub-content" id="act-methods">
+<div class="sub-content" id="act3">
         <div class="content-block">
           <span class="badge badge-act">Activity 3</span>
-          <h3>Methods in Java</h3>
+          <h3>Simple Wallet System</h3>
           <p>Defining and calling methods to promote code reusability and organization.</p>
           <div class="code-block"><span class="kw">import</span> java.util.Scanner;
 
@@ -1061,51 +1740,196 @@ Current Balance: 3000.0&nbsp;&nbsp;&nbsp;&nbsp;Enter amount to add: 400<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Successfully added 400.0<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;New Balance: 3400.0<br>
       </div>
+        </div>
+        <div class="reflection-box"><p>💡 <em>Activity 3 took our earlier ATM concepts a step further by having us build a simple wallet system using switch cases. This approach made structuring the menu options feel much cleaner and more organized than using multiple if-else blocks. The biggest takeaway for me, however, was learning basic error handling. Anticipating invalid inputs and preventing the program from crashing made me realize what it takes to build an application that is actually robust and user-friendly.</em></p></div>
+      </div>
+
+ <div class="sub-content" id="act4">
+
+        <div class="content-block">
+          <span class="badge badge-act">Activity 4</span>
+          <h3>Grade Evaluation System</h3>
+          <p>Create a Java program using bitwise operators that will produce the output: true, 10, false, 15.</p>
+          <div class="code-block">
+<span class="kw">public class</span> <span class="highlight">RegalaGradeEvaluation</span> {
+
+    <span class="kw">public static void</span> main(String[] args) {
+
+        <span class="kw">double</span> prelim = 85;
+        <span class="kw">double</span> midterm = 78;
+        <span class="kw">double</span> finals = 90;
+
+        <span class="kw">double</span> average = (prelim + midterm + finals) / 3;
+
+        <span class="kw">String</span> remark = <span class="str">""</span>;
+
+        <span class="kw">if</span> (average &gt;= 90 &amp;&amp; average &lt;= 100) {
+            remark = <span class="str">"Excellent"</span>;
+        } <span class="kw">else if</span> (average &gt;= 80 &amp;&amp; average &lt; 90) {
+            remark = <span class="str">"Good"</span>;
+        } <span class="kw">else if</span> (average &gt;= 75 &amp;&amp; average &lt; 80) {
+            remark = <span class="str">"Fair"</span>;
+        } <span class="kw">else</span> {
+            remark = <span class="str">"Failed"</span>;
+        }
+
+        System.out.println(<span class="str">"Prelim Grade: "</span> + prelim);
+        System.out.println(<span class="str">"Midterm Grade: "</span> + midterm);
+        System.out.println(<span class="str">"Final Grade: "</span> + finals);
+        System.out.printf(<span class="str">"Average: %.2f\n"</span>, average);
+        System.out.println(<span class="str">"Remark: "</span> + remark);
+
+    }
+}
+      </div>
+      <div class="output-block">
+  Output: 
+  Prelim Grade: 85.0<br>
+  Midterm Grade: 78.0<br>
+  Final Grade: 90.0<br>
+  Average: 84.33<br>
+  Remark: Good<br> 
+</div>
+        </div>
+        <div class="reflection-box"><p>💡 <em>Building on the grade evaluation system in Activity 4, the core lesson was really about mastering if-else conditional statements. It was highly practical to see how just a few lines of if-else logic gave the program the ability to make decisions. By comparing the user's input against our passing criteria, the program could seamlessly route the logic to output either a "Passed" or "Failed" result.</em></p></div>
+      </div>
+
+ <div class="sub-content" id="act5">
+        <div class="content-block">
+          <span class="badge badge-act">Activity 5</span>
+          <h3>Personal Expennse Tracker</h3>
+          <p>A void method that displays the program title. A non-void method that calculates the total expenses using three values: food, transportation, and other expenses. A non-void method that checks if the total expense exceeds a budget and returns a message. A void method that displays the total expense and the budget status.</p>
+          <div class="code-block">
+<span class="kw">import</span> java.util.Scanner;
+
+<span class="kw">public class</span> <span class="highlight">ExpenseTrackerRegala</span> {
+
+    <span class="kw">public static void</span> main(String[] args) {
+        Scanner scanner = <span class="kw">new</span> Scanner(System.in);
+
+        displayTitle();
+
+        System.out.print(<span class="str">"Enter your monthly budget:     "</span>);
+        <span class="kw">double</span> budget = scanner.nextDouble();
+
+        System.out.print(<span class="str">"Enter food expenses:           "</span>);
+        <span class="kw">double</span> food = scanner.nextDouble();
+
+        System.out.print(<span class="str">"Enter transportation expenses: "</span>);
+        <span class="kw">double</span> transpo = scanner.nextDouble();
+
+        System.out.print(<span class="str">"Enter other expenses:          "</span>);
+        <span class="kw">double</span> otherExp = scanner.nextDouble();
+
+        <span class="kw">double</span> totalExp = calculateTot(food, transpo, otherExp);
+
+        <span class="kw">String</span> status = checkBudget(totalExp, budget);
+
+        <span class="kw">double</span> remaining = budget - totalExp;
+
+        displayFinalResult(totalExp, status, remaining);
+
+        scanner.close();
+    }
+
+    <span class="kw">public static void</span> displayTitle() {
+        System.out.println(<span class="str">"======================================="</span>);
+        System.out.println(<span class="str">"      PERSONAL EXPENSE TRACKER         "</span>);
+        System.out.println(<span class="str">"======================================="</span>);
+    }
+
+    <span class="kw">public static double</span> calculateTot(<span class="kw">double</span> food, <span class="kw">double</span> trans, <span class="kw">double</span> misc) {
+        <span class="kw">return</span> food + trans + misc;
+    }
+
+    <span class="kw">public static String</span> checkBudget(<span class="kw">double</span> total, <span class="kw">double</span> budget) {
+        <span class="kw">if</span> (total &gt; budget) {
+            <span class="kw">return</span> <span class="str">"Warning: You have exceeded your budget!"</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> <span class="str">"Good job! You are within your budget."</span>;
+        }
+    }
+
+    <span class="kw">public static void</span> displayFinalResult(<span class="kw">double</span> total, <span class="kw">String</span> status, <span class="kw">double</span> remaining) {
+        System.out.println(<span class="str">"\n     EXPENSE SUMMARY     "</span>);
+        System.out.printf(<span class="str">"Total Expenses:   Php %.2f\n"</span>, total);
+        System.out.printf(<span class="str">"Remaining Budget: Php %.2f\n"</span>, remaining);
+        System.out.println(<span class="str">"Status:           "</span> + status);
+    }
+}
+
+      </div>
+      <div class="output-block">
+  Output: <br>
+  Enter your monthly budget:&nbsp;&nbsp;&nbsp;&nbsp; 8000 <br>
+  Enter food expenses:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5000 <br>
+  Enter transportation expenses:&nbsp;2000 <br>
+  Enter other expenses:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1000 <br>
+  Total Expenses:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Php 8000.00 <br>
+  Remaining Budget:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Php 0.00 <br>  
+  Status:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Good job! You are within your budget.
+  </div>
+     </div>
+        <div class="reflection-box"><p>💡 <em>Activity 5 brought everything together by introducing custom methods to build a Personal Expense Tracker. After writing longer blocks of code in previous activities, learning to separate tasks into void and non-void methods was a game-changer. I used void methods to handle repetitive actions like displaying menus, while non-void methods handled the actual math, returning my updated balances. This modular approach made my code significantly cleaner, easier to read, and much simpler to debug.</em></p></div>
+      </div>
+
     </div>
-  
- 
+  </div>
+</div>
+
+
 <!-- MIDTERM ASSIGNMENT -->
 <div class="panel-overlay" id="panel-midterm-assignment">
   <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
     <div class="panel-header">
       <button class="panel-close" onclick="closePanel('midterm-assignment')">✕</button>
-      <div class="panel-eyebrow">Midterm · Assignment</div>
-      <div class="panel-title">📋 Midterm Assignments</div>
+      <div class="panel-eyebrow">Midterm
+      </div>
+      <div class="panel-title">Assignment</div>
     </div>
     <div class="panel-body">
-      <div class="content-block">
-        <span class="badge badge-sw">Assignment 1</span>
-        <h3>Replace with your assignment title</h3>
-        <p>Describe the assignment instructions and requirements here.</p>
-        <div class="img-placeholder">📷 Add Code Screenshot Here</div>
-        <div class="reflection-box"><p>💡 <em>Add your answer, code, and explanation here.</em></p></div>
+      <div class="sub-tabs">
+        <button class="sub-tab active" onclick="switchTab(this,'as1')">Assignment 1</button>
+        <button class="sub-tab" onclick="switchTab(this,'as2')">Assignment 2</button>
+    </div>
+        <div class="sub-content active" id="as1">
+        <div class="content-block">
+        <span class="badge badge-quiz">Assignment 1</span>
+        <h3>All About Me</h3>
+                          <img src="Me.png" alt="Seatwork Output" class="portfolio-img">    
+          </div>
+        <div class="reflection-box"><p>💡 <em>As the very first task we tackled in OOP, the "All About Me" assignment was easily the simplest work I've done so far. It served as a great icebreaker before we got into any heavy programming logic, giving me a chance to showcase my personality and outline my coding goals. It was also a nice opportunity to share my initial impressions of Mr. Bedis and set a positive tone for the rest of the semester.</em></p></div>
       </div>
     </div>
+
+
+    <div class="sub-content" id="as2">
+        <div class="content-block">
+        <span class="badge badge-quiz">Assignment 2</span>
+        <h3>Introduction To Java</h3>
+                          <img src="as2a.png" alt="Seatwork Output" class="portfolio-img"> 
+                          <img src="as2b.png" alt="Seatwork Output" class="portfolio-img"> 
+          </div>
+        <div class="reflection-box"><p>💡 <em>Learning about the core features of Java alongside the specific roles of the JDK, JRE, and JVM was incredibly helpful. It clarified the entire lifecycle of a Java program, from writing the source code as a developer to its actual execution on a machine. Understanding this architecture made me realize exactly what makes Java so robust and platform-independent.</em></p></div>
+    </div>
+  </div>
   </div>
 </div>
- 
+
 <!-- MIDTERM EXAM -->
 <div class="panel-overlay" id="panel-midterm-exam">
   <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
     <div class="panel-header">
       <button class="panel-close" onclick="closePanel('midterm-exam')">✕</button>
-      <div class="panel-eyebrow">Midterm · Exam</div>
-      <div class="panel-title">📊 Midterm Exam</div>
+      <div class="panel-eyebrow">Midterm</div>
+      <div class="panel-title">Exam</div>
     </div>
     <div class="panel-body">
       <div class="content-block">
         <span class="badge badge-exam">Midterm Exam</span>
-        <h3>Exam Questions & Answers</h3>
-        <p><strong>Q1.</strong> Replace with your exam question here.</p>
-        <p><strong>A:</strong> Replace with your answer/code here.</p>
-        <div class="img-placeholder">📷 Add Exam Output / Screenshot Here</div>
+        <h3>NO RESULTS YET!</h3>
       </div>
-      <div class="content-block">
-        <h3>🪞 Reflection</h3>
-        <div class="reflection-box">
-          <p><em>"Write a meaningful reflection on your midterm exam experience. What were your strengths? What topics were challenging? What would you do differently? This reflection demonstrates your growth and self-awareness as a programmer."</em></p>
-        </div>
-      </div>
+      <div class="reflection-box"><p>💡 <em>The departmental exam was a heavy, comprehensive test covering literally every single topic from the entire midterm. Despite reviewing beforehand, I found it really difficult. While I could handle the theoretical questions, I lacked confidence in my answers for the coding section. This exam showed me that I need to shift my study habits from just reading notes to actively writing and debugging code.</em></p></div>
     </div>
   </div>
 </div>
@@ -1121,16 +1945,11 @@ Current Balance: 3000.0&nbsp;&nbsp;&nbsp;&nbsp;Enter amount to add: 400<br>
     <div class="panel-body">
       <div class="content-block">
         <span class="badge badge-quiz">Quiz 1</span>
-        <h3>Inheritance & Polymorphism</h3>
-        <p><strong>Q1.</strong> What is inheritance in Java?</p>
-        <p><strong>A:</strong> Inheritance is an OOP concept where a subclass acquires the fields and methods of a superclass, promoting code reuse and establishing an IS-A relationship.</p>
-        <div class="reflection-box"><p>💡 <em>Replace with your actual final quiz questions and answers.</em></p></div>
-      </div>
-      <div class="img-placeholder">📷 Add Final Quiz Screenshot Here</div>
+        <h3>COMING SOON!</h3>
     </div>
   </div>
 </div>
- 
+
 <!-- FINAL SEATWORK -->
 <div class="panel-overlay" id="panel-final-seatwork">
   <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
@@ -1142,26 +1961,11 @@ Current Balance: 3000.0&nbsp;&nbsp;&nbsp;&nbsp;Enter amount to add: 400<br>
     <div class="panel-body">
       <div class="content-block">
         <span class="badge badge-sw">Seatwork 1</span>
-        <h3>Inheritance Demo</h3>
-        <div class="code-block"><span class="kw">public class</span> <span class="highlight">Animal</span> {
-    <span class="kw">public void</span> speak() {
-        System.out.println(<span class="str">"..."</span>);
-    }
-}
- 
-<span class="kw">public class</span> <span class="highlight">Dog</span> <span class="kw">extends</span> Animal {
-    <span class="kw">@Override
-    public void</span> speak() {
-        System.out.println(<span class="str">"Woof!"</span>);
-    }
-}</div>
-        <div class="reflection-box"><p>💡 <em>Add your final seatwork content here.</em></p></div>
-      </div>
-      <div class="img-placeholder">📷 Add Final Seatwork Screenshot Here</div>
+        <h3>COMING SOON!</h3>
     </div>
   </div>
 </div>
- 
+
 <!-- FINAL ACTIVITIES -->
 <div class="panel-overlay" id="panel-final-activities">
   <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
@@ -1179,27 +1983,7 @@ Current Balance: 3000.0&nbsp;&nbsp;&nbsp;&nbsp;Enter amount to add: 400<br>
       <div class="sub-content active" id="fact-1">
         <div class="content-block">
           <span class="badge badge-act">Activity 1</span>
-          <h3>Replace with your Final Activity 1 title</h3>
-          <p>Add your activity description, code, and output screenshots here.</p>
-          <div class="img-placeholder">📷 Screenshot</div>
-          <div class="reflection-box"><p>💡 <em>Add your reflection and learnings here.</em></p></div>
-        </div>
-      </div>
-      <div class="sub-content" id="fact-2">
-        <div class="content-block">
-          <span class="badge badge-act">Activity 2</span>
-          <h3>Replace with your Final Activity 2 title</h3>
-          <div class="img-placeholder">📷 Screenshot</div>
-          <div class="reflection-box"><p>💡 <em>Add your reflection and learnings here.</em></p></div>
-        </div>
-      </div>
-      <div class="sub-content" id="fact-3">
-        <div class="content-block">
-          <span class="badge badge-act">Activity 3</span>
-          <h3>Replace with your Final Activity 3 title</h3>
-          <div class="img-placeholder">📷 Screenshot</div>
-          <div class="reflection-box"><p>💡 <em>Add your reflection and learnings here.</em></p></div>
-        </div>
+                  <h3>COMING SOON!</h3>
       </div>
     </div>
   </div>
@@ -1216,15 +2000,11 @@ Current Balance: 3000.0&nbsp;&nbsp;&nbsp;&nbsp;Enter amount to add: 400<br>
     <div class="panel-body">
       <div class="content-block">
         <span class="badge badge-sw">Assignment 1</span>
-        <h3>Replace with your Final Assignment title</h3>
-        <p>Add instructions, your solution, and code screenshots here.</p>
-        <div class="img-placeholder">📷 Screenshot</div>
-        <div class="reflection-box"><p>💡 <em>Add your explanation and reflection here.</em></p></div>
-      </div>
+                <h3>COMING SOON!</h3>
     </div>
   </div>
 </div>
- 
+
 <!-- FINAL EXAM -->
 <div class="panel-overlay" id="panel-final-exam">
   <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
@@ -1236,15 +2016,28 @@ Current Balance: 3000.0&nbsp;&nbsp;&nbsp;&nbsp;Enter amount to add: 400<br>
     <div class="panel-body">
       <div class="content-block">
         <span class="badge badge-exam">Final Exam</span>
-        <h3>Exam Questions & Code Answers</h3>
-        <p>Replace this with your actual final exam questions and answers or code.</p>
-        <div class="img-placeholder">📷 Add Final Exam Screenshot Here</div>
+                <h3>COMING SOON!</h3>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL IN PROGRESS -->
+<div class="panel-overlay" id="panel-final-in-progress">
+  <div class="panel-drawer"><canvas class="panel-leaf-canvas"></canvas>
+    <div class="panel-header">
+      <button class="panel-close" onclick="closePanel('final-in-progress')">✕</button>
+      <div class="panel-eyebrow">Final · Status</div>
+      <div class="panel-title">🔜 Final Period</div>
+    </div>
+    <div class="panel-body">
       <div class="content-block">
-        <h3>🪞 Final Reflection</h3>
-        <div class="reflection-box">
-          <p><em>"Write your final reflection here. Reflect on your overall journey in OOP — how your understanding evolved from basic syntax to applying full OOP principles like inheritance, polymorphism, and encapsulation. What are your biggest takeaways?"</em></p>
-        </div>
+        <span class="badge badge-quiz">In Progress</span>
+        <h3>Final Period is Still Ongoing!</h3>
+        <p style="color: var(--muted); margin-top: 12px;">Final term records will be available after the final examination period concludes.</p>
+      </div>
+      <div class="reflection-box">
+        <p>💡 <em>Currently showing Midterm records only. The final term covers advanced OOP topics including inheritance, polymorphism, interfaces, and design patterns. Check back after the final exam for updates!</em></p>
       </div>
     </div>
   </div>
@@ -1252,9 +2045,7 @@ Current Balance: 3000.0&nbsp;&nbsp;&nbsp;&nbsp;Enter amount to add: 400<br>
  
  
 <script>
-// ── Custom Cursor ──────────────────────────────
-
-// ── Custom Cursor ──────────────────────────────
+// Custom Cursor 
 const cursor    = document.getElementById('cursor');
 const glowEl    = document.getElementById('cursor-glow');
 
@@ -1281,7 +2072,7 @@ document.querySelectorAll('a, button, .term-card, .sub-tab, .nav-links a').forEa
 });
 
 
-// ── Global Falling Leaves ──────────────────────
+// Global Falling Leaves
 const canvas = document.getElementById('leaf-canvas');
 const ctx    = canvas.getContext('2d');
 
@@ -1356,7 +2147,7 @@ class GlobalLeaf {
 
 const globalLeaves = Array.from({length: 55}, () => new GlobalLeaf());
 
-// Global leaf repel
+// leaf interaction
 let prevMX = 0, prevMY = 0;
 document.addEventListener('mousemove', e => {
   const dvx = e.clientX - prevMX;
@@ -1381,10 +2172,6 @@ function animateGlobal() {
 }
 requestAnimationFrame(animateGlobal);
 
-
-// ── Panel Leaf Canvas System ───────────────────
-// Each open panel gets its own falling leaves + cursor glow rendered on its canvas
-// Includes burst effect when panel opens + transparent falling leaves
 
 class PanelLeafSystem {
   constructor(canvasEl) {
@@ -1485,7 +2272,7 @@ class PanelLeafSystem {
       const h = this.canvas.height;
       c.clearRect(0, 0, w, h);
 
-      // Draw cursor glow inside panel
+      // cursor glow 
       if (this.mouseX > 0) {
         const grd = c.createRadialGradient(this.mouseX, this.mouseY, 0, this.mouseX, this.mouseY, 180);
         grd.addColorStop(0, 'rgba(220,100,30,0.18)');
@@ -1500,7 +2287,7 @@ class PanelLeafSystem {
         c.restore();
       }
 
-      // Draw + update burst leaves
+      // burst leaves
       this.burstLeaves = this.burstLeaves.filter(l => l.life > 0);
       this.burstLeaves.forEach(l => {
         l.x += l.vx;
@@ -1519,7 +2306,7 @@ class PanelLeafSystem {
         c.restore();
       });
 
-      // Draw + update falling leaves
+      // falling leaves
       this.leaves.forEach(l => {
         l.sa  += 0.012;
         l.x   += Math.sin(l.sa * l.sw) * 0.6 + l.vx;
@@ -1553,7 +2340,7 @@ class PanelLeafSystem {
   }
 }
 
-// Map panel-id → PanelLeafSystem
+// panelLeafSystem
 const panelSystems = {};
 
 document.querySelectorAll('.panel-overlay').forEach(overlay => {
@@ -1565,7 +2352,7 @@ document.querySelectorAll('.panel-overlay').forEach(overlay => {
   const id  = overlay.id.replace('panel-', '');
   panelSystems[id] = sys;
 
-  // Track mouse inside the drawer
+  // mouse track
   drawer.addEventListener('mousemove', e => {
     const r = drawer.getBoundingClientRect();
     sys.onMouseMove(e.clientX - r.left, e.clientY - r.top + drawer.scrollTop);
@@ -1574,7 +2361,7 @@ document.querySelectorAll('.panel-overlay').forEach(overlay => {
 });
 
 
-// ── Panel open/close ──────────────────────────
+// panel open/close 
 function openPanel(id) {
   document.getElementById('panel-' + id).classList.add('open');
   document.body.style.overflow = 'hidden';
